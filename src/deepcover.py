@@ -91,6 +91,8 @@ def main():
   else:
     raise Exception ('A DNN model needs to be provided...')
 
+    
+  print(args)
   ## to load the input data
   fnames=[]
   xs=[]
