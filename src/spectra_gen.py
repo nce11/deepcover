@@ -1,5 +1,5 @@
 import numpy as np
-from src.utils import *
+from utils import *
 
 def spectra_sym_gen(eobj, x, y, adv_value=1, testgen_factor=.2, testgen_size=0):
 
