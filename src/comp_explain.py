@@ -1,9 +1,9 @@
 import numpy as np
-from src.spectra_gen import *
-from src.to_rank import *
-from src.utils import *
+from spectra_gen import *
+from to_rank import *
+from utils import *
 from datetime import datetime
-from src.mask import *
+from mask import *
 from itertools import combinations
 import math
 import matplotlib.pyplot as plt
