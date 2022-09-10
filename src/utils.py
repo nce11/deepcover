@@ -39,6 +39,7 @@ class explain_objectt:
     self.boxes=None
     self.occlusion_file=None
     self.min_exp=1.1
+    self.sb3=None
 
 
 class sbfl_elementt:
