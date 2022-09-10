@@ -116,13 +116,22 @@ def compositional_causal_explain(node, eobj):
           else: row.append(True)
         
         #if early_stop<=2: continue
-
-        res=eobj.model.predict(sbfl_preprocess(eobj, np.array([mutant])))
-        y_mutant=np.argsort(res)[0][-1:]
-        if not (y_mutant[0] in outp):
-          row.append(False)
+        if eobj.sb3 is True:
+          res, _states = eobj.model.predict(sbfl_preprocess(eobj, mutant))
+          y_mutant = res
+          print('y_mutant SB3')
+          print(outp, y_mutant)
+          if not (y_mutant == outp):
+            row.append(False)
+          else:
+            row.append(True)
         else:
-          row.append(True)
+          res=eobj.model.predict(sbfl_preprocess(eobj, np.array([mutant])))
+          y_mutant=np.argsort(res)[0][-1:]
+          if not (y_mutant[0] in outp):
+            row.append(False)
+          else:
+            row.append(True)
         rows_r.append(np.array(row))
       ##
       truthTable.append(np.array(rows_r))
@@ -198,10 +207,15 @@ def comp_explain(eobj):
   for index in range(0, len(eobj.inputs)):
     name=eobj.fnames[index]
     x=eobj.inputs[index]
-    res=model.predict(sbfl_preprocess(eobj, np.array([x])))
-    y=np.argsort(res)[0][-eobj.top_classes:]
+    if eobj.sb3 is True:
+      res, _states=model.predict(sbfl_preprocess(eobj, x))
+      y = res
+      print(res)
+    else:
+      res=model.predict(sbfl_preprocess(eobj, np.array([x])))
+      y=np.argsort(res)[0][-eobj.top_classes:]
     #print ('## Input:', index, name)
-    print ('\n[Input {2}: {0} / Output Label (to Explain): {1}]'.format(eobj.fnames[index], y, index))
+      print ('\n[Input {2}: {0} / Output Label (to Explain): {1}]'.format(eobj.fnames[index], y, index))
     #print ('## Output:', y, np.sort(res)[0][-eobj.top_classes:])
     #print ('## Output:', np.argsort(res)[0][-5:])
     #print (x.shape)
