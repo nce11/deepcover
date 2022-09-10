@@ -182,6 +182,7 @@ def compositional_causal_explain(node, eobj):
 
 def comp_explain(eobj):
   print ('\n[To explain: Causal Explanation is used]')
+  eobj.model = inception_v3.InceptionV3(weights="imagenet", input_tensor=Input(shape=(104,110, 3)))
   model=eobj.model # this is the model to explain
   ## to create output DI
   di=eobj.outputs # output dir
@@ -189,8 +190,7 @@ def comp_explain(eobj):
     os.system('mkdir -p {0}'.format(di))
     #print ('mkdir -p {0}'.format(di))
   except: pass
-  try:
-    model = inception_v3.InceptionV3(weights="imagenet", input_tensor=Input(shape=(104,110, 3)))
+
 
   if not eobj.occlusion_file is None:
       f = open(di+"/occlusion-results.txt", "a")
