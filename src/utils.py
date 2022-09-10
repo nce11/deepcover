@@ -80,6 +80,9 @@ def sbfl_preprocess(eobj, chunk):
     x=x/255.
   elif eobj.mnist is True or eobj.cifar10 is True:
     x=x/255.
+  elif eobj.sb3 is True:
+    #print ('\nSB3 transpose is done')
+    x=np.transpose(x)
   return x
 
 def save_an_image(im, title, di='./'):
@@ -115,8 +118,12 @@ def top_plot(sbfl_element, ind, di, metric='', eobj=None, bg=128, online=False, 
       count+=1
       if count%base==0:
         save_an_image(im_o, '{1}-{0}'.format(int(count/base), metric), di)
-        res=sbfl_element.model.predict(sbfl_preprocess(eobj, np.array([im_o])))
-        y=np.argsort(res)[0][-eobj.top_classes:]
+        if eobj.sb3 is True:
+          res, _states = sbfl_element.model.predict(sbfl_preprocess(eobj, im_o))
+          y = res
+        else:
+          res=sbfl_element.model.predict(sbfl_preprocess(eobj, np.array([im_o])))
+          y=np.argsort(res)[0][-eobj.top_classes:]
         #print (int(count/base), '>>>', y, sbfl_element.y, y==sbfl_element.y)
         if y==sbfl_element.y and not found_exp: 
           save_an_image(im_o, 'explanation-found-{1}-{0}'.format(int(count/base), metric), di)

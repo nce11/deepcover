@@ -119,8 +119,8 @@ def compositional_causal_explain(node, eobj):
         if eobj.sb3 is True:
           res, _states = eobj.model.predict(sbfl_preprocess(eobj, mutant))
           y_mutant = res
-          print('y_mutant SB3')
-          print(outp, y_mutant)
+          #print('y_mutant SB3')
+          #print(outp, y_mutant)
           if not (y_mutant == outp):
             row.append(False)
           else:
